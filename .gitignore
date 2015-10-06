@@ -70,4 +70,4 @@ target/
 # envrc
 .direnv/
 .envrc
-movielens/db.sqlite3
+movieratings/db.sqlite3
