@@ -7,11 +7,11 @@ class RaterAdmin(admin.ModelAdmin):
 
 
 class MovieAdmin(admin.ModelAdmin):
-    list_display = ['title']
+    list_display = ['title', 'average_rating']
 
 
 class RatingAdmin(admin.ModelAdmin):
-    list_display = ['movie', 'rating']
+    list_display = ['movie']
 
 
 # Register your models here.
