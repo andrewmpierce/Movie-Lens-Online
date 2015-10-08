@@ -121,10 +121,9 @@ def load_ml_data():
             movie = {
                 'fields': {
                     'title': row['Title']
-                    #'average_rating': get_ratings(row['MovieID'], ratings)
                 },
                 'model': 'ratings.Movie',
-                'pk': row['MovieID']
+                'pk': int(row['MovieID'])
             }
 
             movies.append(movie)
