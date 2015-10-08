@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>{{ Movie Lens }}</h2>
+    <p>{{ movie.title }} <small>({{ movie.average_rating() }})</small></p>
+  {% endfor %}
+{% endblock %}

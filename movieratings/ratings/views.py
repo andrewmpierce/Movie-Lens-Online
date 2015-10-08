@@ -4,7 +4,21 @@ from .models import Movie, Rating, Rater
 
 
 # Create your views here.
-def top_twenty(request):
-    movies = Movie.objects.all()
-    top_twenty = [str(movies) for movie in sorted(movies, key=movies.id, reverse=True)]
-    return HttpResponse('<br>'.join(top_twenty[:20]))
+def top_20(request):
+    top_twenty = sorted(Movie.objects.all(), key = lambda c: c.average_rating(), reverse=True)
+    top_twenty = top_twenty[:20]
+    return HttpResponse('<br>'.join(top_twenty))
+
+
+def show_movies(request, movie_id):
+    movie = Movie.objects.get(pk=movie_id)
+    string = ' <center><h3> Title : {} </h3> Average Rating : {}</center>'.format(movie.title, movie.average_rating())
+    #ratings = Rating.objects.get(movie = movie_id)
+    return HttpResponse(string)
+
+
+
+def users(request, user_id):
+    user = Rater.objects.get(pk=user_id)
+    string = '<center> <h3> User Id : {} </h3> Age : {} <br> Occupation : {} <br> Gender : {} <br> Zipcode : {}</center>'.format(user.id, user.age, user.occupation, user.gender, user.zipcode)
+    return HttpResponse(string)

@@ -27,12 +27,14 @@ class Rater(models.Model):
 class Movie(models.Model):
     title = models.CharField(max_length=255)
 
+    #class Meta:
+    #    ordering = ['-average_rating']
+
     def average_rating(self):
         return self.rating_set.aggregate(models.Avg('stars'))['stars__avg']
 
     def __str__(self):
-        return ' Title : {}'.format(self.title)
-
+        return ' Title : {}, Average Rating : {}'.format(self.title, self.average_rating())
 
 class Rating(models.Model):
     movie = models.ForeignKey(Movie)
@@ -41,6 +43,15 @@ class Rating(models.Model):
 
     def __str__(self):
         return ' Title : {}, Rating: {}, Rater {}'.format(self.movie, self.stars, self.user)
+
+
+def get_ratings(movieid, ratings):
+    for rating in ratings:
+        av_stars = []
+        if rating[rating][fields][movie] == movieid:
+            rating[rating][fields][stars].append(av_stars)
+        return(sum(av_stars)/len(av_stars))
+
 
 
 def load_ml_data():
@@ -110,6 +121,7 @@ def load_ml_data():
             movie = {
                 'fields': {
                     'title': row['Title']
+                    #'average_rating': get_ratings(row['MovieID'], ratings)
                 },
                 'model': 'ratings.Movie',
                 'pk': row['MovieID']
@@ -119,3 +131,8 @@ def load_ml_data():
 
     with open('movies.json', 'w') as f:
         f.write(json.dumps(movies))
+
+def delete_extra_data():
+    for movie in Movie.objects.all():
+        if movie.average_rating is None:
+            movie.delete()

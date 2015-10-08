@@ -3,7 +3,7 @@ from .models import Rater, Movie, Rating
 
 
 class RaterAdmin(admin.ModelAdmin):
-    list_display = ['age', 'occupation']
+    list_display = ['age', 'occupation', 'gender', 'zipcode']
 
 
 class MovieAdmin(admin.ModelAdmin):
@@ -11,7 +11,7 @@ class MovieAdmin(admin.ModelAdmin):
 
 
 class RatingAdmin(admin.ModelAdmin):
-    list_display = ['movie']
+    list_display = ['movie', 'stars', 'user']
 
 
 # Register your models here.
