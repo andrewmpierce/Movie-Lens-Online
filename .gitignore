@@ -70,4 +70,6 @@ target/
 # envrc
 .direnv/
 .envrc
-movieratings/db.sqlite3
+*.sqlite3
+movieratings/data
+movieratings/fixtures

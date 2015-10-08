@@ -3,7 +3,6 @@
   <h2>{{ movie.title }}</h2>
   <p>{{ movie.average_rating|floatformat }}
 
-  <ul>
     {% for rating in movie.rating_set.all %}
     <li>{{ rating.user }} : {{ rating.stars }}</li>
 {% endfor %}

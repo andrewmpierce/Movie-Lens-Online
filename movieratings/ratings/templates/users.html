@@ -1,4 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
-  <h2>{{ movie.title }}</h2>
+  <dl>
+    <dt>{{ user.pk }}</dt>
+    <dt>Gender</dt>
+    <dd>{{user.gender}}</dd>
+    <dt>Age</dt>
+    <dd>{{user.age}}</dd>
+    <dt>Occupation</dt>
+    <dd>{{user.occupation}}</dd>
+    <dt>Zipcode</dt>
+    <dd>{{user.zipcode}}</dd>
+  </dl>
+
+<ul>
+  {% for rating in user.rating_set.all %}
+  <li> {{rating.movie}} - {{rating.stars}} </li>
+  {%endfor%}
+  </ul?
+
 {% endblock %}

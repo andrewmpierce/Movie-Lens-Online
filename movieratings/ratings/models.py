@@ -34,7 +34,7 @@ class Movie(models.Model):
         return self.rating_set.aggregate(models.Avg('stars'))['stars__avg']
 
     def __str__(self):
-        return ' Title : {}, Average Rating : {}'.format(self.title, self.average_rating())
+        return ' Title : {}'.format(self.title)
 
 class Rating(models.Model):
     movie = models.ForeignKey(Movie)
