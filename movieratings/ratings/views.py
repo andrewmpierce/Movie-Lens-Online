@@ -5,8 +5,9 @@ from .models import Movie, Rating, Rater
 
 # Create your views here.
 def top_20(request):
-    top_twenty = sorted(Movie.objects.all(), key = lambda c: c.average_rating(), reverse=True)
-    top_twenty = top_twenty[:20]
+    top_twenty = [movie for movie in Movie.objects.all() if type(movie.average_rating()) == float]
+    top_twenty = sorted(top_twenty, key = lambda c: c.average_rating(), reverse=True)
+    top_twenty = [str(movie) for movie in top_twenty[:20]]
     return HttpResponse('<br>'.join(top_twenty))
 
 
