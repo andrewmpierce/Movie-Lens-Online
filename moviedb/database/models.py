@@ -7,12 +7,11 @@ class Rater(models.Model):
     OTHER = 'O'
     X = 'X'
 
-    user = models.OneToOneField(User, primary_key=True)
+    user = models.OneToOneField(User, null=True)
     genders = ((MALE, 'Male'), (FEMALE, 'Female'), (OTHER, 'Other'), (X, 'X'))
-    rater_id = models.PositiveSmallIntegerField()
     age = models.PositiveSmallIntegerField()
     gender = models.CharField(max_length=1, choices=genders, default='X')
-    zipcode = models.PositiveSmallIntegerField()
+    zipcode = models.CharField(max_length=15)
     occupation = models.CharField(max_length=50)
 
 
@@ -27,6 +26,6 @@ class Movie(models.Model):
 
 
 class Rating(models.Model):
-    rater = models.ForeignKey('Rater')
-    movie = models.ForeignKey('Movie')
+    rater = models.ForeignKey(Rater)
+    movie = models.ForeignKey(Movie)
     stars = models.PositiveSmallIntegerField()

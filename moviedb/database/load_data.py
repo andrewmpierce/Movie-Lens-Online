@@ -16,7 +16,6 @@ def load_movies():
         for row in reader:
             movie = {
             'fields':{
-                'movie_id':int(row['MovieID']),
                 'title':row['Title']},
             'model':'database.Movie',
             'pk': int(row['MovieID'])
@@ -37,7 +36,6 @@ def load_raters():
         for row in reader:
             rater = {
             'fields':{
-                'user_id':int(row['UserID']),
                 'gender':row['Gender'],
                 'age': row['Age'],
                 'occupation': row['Occupation'],
@@ -48,7 +46,7 @@ def load_raters():
             }
             raters.append(rater)
 
-    with open('movies.json', 'w') as f:
+    with open('raters.json', 'w') as f:
         f.write(json.dumps(raters))
 
 def load_ratings():
@@ -61,23 +59,26 @@ def load_ratings():
         count = 1
         for row in reader:
 
-            rater = {
+            rating = {
             'fields':{
                 'rater':int(row['UserID']),
                 'movie':row['MovieID'],
-                'stars': row['Rating'],
-
+                'stars': row['Rating']},
 
             'model':'database.Rating',
-            'pk': count
-            }
-            raters.append(rating)
+            'pk': count }
+            ratings.append(rating)
             count += 1
 
     with open('ratings.json', 'w') as f:
         f.write(json.dumps(ratings))
 
 def create_users():
-    fake = Faker
+    fake = Faker()
     for rater in Rater.objects.all():
-        rater = User.object
+        if rater.user == None:
+            rater.user = User.objects.create_user(username=fake.user_name()+str(random.randint(1, 999)),
+                                email= fake.email(),
+                                password='password')
+            rater.save()
+            print(rater.user.username)
