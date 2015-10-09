@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from ratings import views
+from users import views as users_views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -24,6 +25,6 @@ urlpatterns = [
     url(r'^top_20', views.top_20, name='top_twenty'),
     url(r'^movies/(?P<movie_id>\d+)$', views.movie_detail, name='movie_detail'),
     url(r'^users/(?P<user_id>\d+)$', views.rater_detail, name='rater_detail'),
-    url(r'^users/reg', views.user_register, name='user_register'),
-    url(r'^users/login', views.user_login, name='user_login')
+    url(r'^users/reg', users_views.user_register, name='user_register'),
+    url(r'^users/login', users_views.user_login, name='user_login')
 ]
