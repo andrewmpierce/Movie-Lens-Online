@@ -71,5 +71,5 @@ target/
 .direnv/
 .envrc
 *.sqlite3
-movieratings/data
-movieratings/fixtures
+moviedb/data
+moviedb/fixtures
