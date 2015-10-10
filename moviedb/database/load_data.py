@@ -76,7 +76,7 @@ def load_ratings():
 def create_users():
     fake = Faker()
     for rater in Rater.objects.all():
-        if rater.user == None:
+        if rater.user is None:
             rater.user = User.objects.create_user(username=fake.user_name()+str(random.randint(1, 999)),
                                 email= fake.email(),
                                 password='password')

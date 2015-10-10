@@ -29,3 +29,6 @@ class Rating(models.Model):
     rater = models.ForeignKey(Rater)
     movie = models.ForeignKey(Movie)
     stars = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return ' Title : {}, Rating: {}, Rater {}'.format(self.movie, self.stars, self.user)
