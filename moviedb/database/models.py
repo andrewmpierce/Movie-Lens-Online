@@ -14,14 +14,20 @@ class Rater(models.Model):
     zipcode = models.CharField(max_length=15)
     occupation = models.CharField(max_length=50)
 
+    def __str__(self):
+         return '{}'.format(self.user)
 
 
 class Movie(models.Model):
     title = models.CharField(max_length=255)
     movie_id = models.PositiveSmallIntegerField(primary_key=True)
 
+    def __str__(self):
+         return '{} {}'.format(self.pk, self.title)
+
     def average_rating(self):
         return self.rating_set.aggregate(models.Avg('stars'))['stars__avg']
+
 
 
 
@@ -31,4 +37,4 @@ class Rating(models.Model):
     stars = models.PositiveSmallIntegerField()
 
     def __str__(self):
-        return ' Title : {}, Rating: {}, Rater {}'.format(self.movie, self.stars, self.user)
+         return '{} {} {}'.format(self.rater, self.movie, self.stars)
