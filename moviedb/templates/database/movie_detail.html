@@ -1,7 +1,21 @@
 <h1> {{ movie.title }} </h1>
 
 <h3> Average rating: {{movie.average_rating | floatformat}} </h3>
-
+<h4> Want to rate this movie? </h4>
+<form method="POST">
+  {% csrf_token %}
+  <input type="radio" name="rating" value="1" >1 Star
+  <br>
+  <input type="radio" name="rating" value="2">2 Stars
+  <br>
+  <input type="radio" name="rating" value="3">3 Stars
+  <br>
+  <input type="radio" name="rating" value="4">4 Stars
+  <br>
+  <input type="radio" name="rating" value="5">5 Stars
+  <br>
+  <input type="submit" value="Submit">
+</form>
 <ul>
   {% for rating in movie.rating_set.all %}
   <li><a href="{% url 'rater_detail' rating.rater.pk %}"> {{rating.rater.user}}</a>: {{rating.stars}}<li>

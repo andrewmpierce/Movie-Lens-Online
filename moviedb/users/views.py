@@ -18,16 +18,23 @@ def user_register(request):
         password = user.password
         user.set_password(password)
         user.save()
-
         profile = UserProfile(user=user, fav_movie= 'Toy Story')
         profile.save()
-
-        user = authenticate(username=user.username,
-                            password=password)
-
+        user = authenticate(username=user,
+                             password=password)
+        try:
+            user_r = User.objects.get(username=user)
+            ratings = []
+            for rating in user_r.rater.rating_set.all():
+                ratings.append({'movie':rating.movie,
+                                'stars': rating.stars})
+        except:
+            pass
         login(request, user)
-        view_profile()
-
+        return render(request,
+                    'users/profile_detail.html',
+                    {'rater':user_r,
+                    'ratings': ratings})
     else:
         form = UserForm()
     return render(request, 'users/register.html',
@@ -38,10 +45,17 @@ def user_login(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
-        profile = User.objects.get(username=username)
+        user_r = User.objects.get(username=username)
+        ratings = []
+        for rating in user_r.rater.rating_set.all():
+            ratings.append({'movie':rating.movie,
+                            'stars': rating.stars})
         if user.is_active:
             login(request, user)
-            return redirect(reverse('profile_detail', args=[profile.pk]))
+            return render(request,
+                        'users/profile_detail.html',
+                        {'rater':user_r,
+                        'ratings': ratings})
         else:
             return render(request,
                       'users/login.html',
@@ -49,6 +63,14 @@ def user_login(request):
                       'username':username})
     return render(request, 'users/login.html')
 
+
+def user_logout(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        logout(request, user)
+    return render(request, 'database/top_twenty.html')
 
 
 class UserProfileDetail(DetailView):

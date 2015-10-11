@@ -1,0 +1,12 @@
+<h2> {{ rater.username }}  Profile</h2>
+   <form method="post">
+       {% csrf_token %}
+       <h3> All Rated Movies </h3>
+       <ul>
+         {% for rating in ratings %}
+         <li><a href="{% url 'movie_detail' rating.movie.pk %}"> {{rating.movie.title}}</a>: {{rating.stars}}<li>
+           {% endfor %}
+         </ul>
+       {{ form.as_p }}
+       
+   </form>

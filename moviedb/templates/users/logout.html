@@ -1,0 +1,13 @@
+<h2>Log Out</h2>
+
+
+
+  <form method="POST" action="{% url 'logout' %}">
+    {% csrf_token %}
+    Username: <input type="text" name="username" value="{{ username }}">
+    <br>
+    Password: <input type="password" name="password">
+    <br>
+
+    <input type="submit" value="Logout">
+  </form>

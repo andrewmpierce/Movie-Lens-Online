@@ -38,3 +38,6 @@ class Rating(models.Model):
 
     def __str__(self):
          return '{} {} {}'.format(self.rater, self.movie, self.stars)
+
+    def create_rating(rater, movie, stars):
+        return Rating.objects.create(rater=rater, movie=movie, stars=stars)
