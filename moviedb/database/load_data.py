@@ -3,6 +3,8 @@ import json
 from database.models import *
 from faker import Faker
 import random
+from django.db.models.signals import post_save
+from users.models import UserProfile
 
 
 def load_movies():
@@ -82,3 +84,14 @@ def create_users():
                                 password='password')
             rater.save()
             print(rater.user.username)
+
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+    return post_save.connect(create_user_profile, sender=User)
+
+def create_all_profiles():
+    for user in User.objects.all():
+        UserProfile.objects.create(user=user)
+        post_save.connect(create_user_profile, sender=User)
+        print(user.userprofile)

@@ -54,6 +54,8 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'moviedb.urls'
 
+AUTH_PROFILE_MODULE = 'users.UserProfile'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
