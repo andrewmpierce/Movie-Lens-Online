@@ -13,13 +13,11 @@ from database.views import *
 
 # Create your views here.
 def rater_register(request):
-    if request.method == 'POST':
-        Rater.objects.create(user=request.user,
+        return Rater.objects.create(user=request.user,
                             gender=request.POST['gender'],
                             age=request.POST['age'],
                             zipcode=request.POST['zipcode'],
                             occupation=request.POST['occupation'])
-    return render(request, 'users/rater_reg.html')
 
 def user_register(request):
     form = UserForm(request.POST)
@@ -33,6 +31,11 @@ def user_register(request):
         user = authenticate(username=user,
                              password=password)
         user_r = User.objects.get(username=user)
+        Rater.objects.create(user=user_r,
+                            gender=request.POST['gender'],
+                            age=request.POST['age'],
+                            zipcode=request.POST['zipcode'],
+                            occupation=request.POST['occupation'])
         ratings = []
         try:
             for rating in user_r.rater.rating_set.all():
@@ -83,7 +86,7 @@ def user_logout(request):
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         logout(request, user)
-    return render(request, 'database/top_twenty.html')
+    return redirect('database/top_twenty.html')
 
 
 class UserProfileDetail(DetailView):

@@ -3,5 +3,17 @@
   <form method="POST" action="{% url 'register' %}">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Register">
+    <p> What is your gender? </p>
+    <input type="radio" name="gender" value="M" >Male
+    <br>
+    <input type="radio" name="gender" value="F">Female
+    <br>
+    <input type="radio" name="gender" value="O">Other
+    <br>
+    <input type="text" name="age">Age:
+    <br>
+    <input type="text" name="zipcode">ZipCode:
+    <br>
+    <input type="text" name="occupation">Occupation:
+    <input type="submit" value="Submit">
   </form>

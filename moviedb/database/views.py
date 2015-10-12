@@ -13,10 +13,7 @@ def movie_detail(request, movie_id):
         if request.user.is_authenticated():
                 form = RatingForm(request.POST)
                 if form.is_valid():
-                    try:
                          Rating.create_rating(movie=movie, rater=request.user.rater, stars=request.POST['rating'])
-                    except:
-                        return redirect("http://127.0.0.1:8000/rater/reg")
         else:
             return redirect("http://127.0.0.1:8000/users/login")
     return render(request,
