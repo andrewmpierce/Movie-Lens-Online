@@ -1,16 +1,26 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from .forms import UserForm
-from database import views
 from .models import UserProfile
 from django.views.generic import DetailView
 from django.views.generic import CreateView, UpdateView
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from database.models import Rater, Movie, Rating
+from database.views import *
 
 
 
 # Create your views here.
+def rater_register(request):
+    if request.method == 'POST':
+        Rater.objects.create(user=request.user,
+                            gender=request.POST['gender'],
+                            age=request.POST['age'],
+                            zipcode=request.POST['zipcode'],
+                            occupation=request.POST['occupation'])
+    return render(request, 'users/rater_reg.html')
+
 def user_register(request):
     form = UserForm(request.POST)
     if form.is_valid():
@@ -22,9 +32,9 @@ def user_register(request):
         profile.save()
         user = authenticate(username=user,
                              password=password)
+        user_r = User.objects.get(username=user)
+        ratings = []
         try:
-            user_r = User.objects.get(username=user)
-            ratings = []
             for rating in user_r.rater.rating_set.all():
                 ratings.append({'movie':rating.movie,
                                 'stars': rating.stars})
@@ -47,9 +57,12 @@ def user_login(request):
         user = authenticate(username=username, password=password)
         user_r = User.objects.get(username=username)
         ratings = []
-        for rating in user_r.rater.rating_set.all():
-            ratings.append({'movie':rating.movie,
+        try:
+            for rating in user_r.rater.rating_set.all():
+                ratings.append({'movie':rating.movie,
                             'stars': rating.stars})
+        except:
+            pass
         if user.is_active:
             login(request, user)
             return render(request,

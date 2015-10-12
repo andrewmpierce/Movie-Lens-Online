@@ -18,6 +18,7 @@ class Rater(models.Model):
          return '{}'.format(self.user)
 
 
+
 class Movie(models.Model):
     title = models.CharField(max_length=255)
     movie_id = models.PositiveSmallIntegerField(primary_key=True)
