@@ -71,5 +71,6 @@ target/
 .direnv/
 .envrc
 *.sqlite3
+<<<<<<< HEAD
 movie_lens_online/data
 movie_lens_online/moviedb/fixtures
