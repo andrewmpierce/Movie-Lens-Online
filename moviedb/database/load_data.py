@@ -5,6 +5,8 @@ from faker import Faker
 import random
 from django.db.models.signals import post_save
 from users.models import UserProfile
+from datetime import datetime
+
 
 
 def load_movies():
@@ -52,6 +54,7 @@ def load_raters():
         f.write(json.dumps(raters))
 
 def load_ratings():
+    fake = Faker()
     ratings = []
 
     with open('data/ratings.dat') as f:
@@ -65,7 +68,9 @@ def load_ratings():
             'fields':{
                 'rater':int(row['UserID']),
                 'movie':row['MovieID'],
-                'stars': row['Rating']},
+                'stars': row['Rating'],
+                'text' : fake.text(max_nb_chars=100),
+                'timestamp': fake.date_time_this_year()},
 
             'model':'database.Rating',
             'pk': count }

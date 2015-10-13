@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from database.models import Rater, Movie, Rating
 from database.views import *
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -60,16 +61,13 @@ def user_login(request):
         user = authenticate(username=username, password=password)
         user_r = User.objects.get(username=username)
         ratings = []
-        try:
-            for rating in user_r.rater.rating_set.all():
-                ratings.append({'movie':rating.movie,
-                            'stars': rating.stars})
-        except:
-            pass
+        for rating in user_r.rater.rating_set.all():
+            ratings.append({'movie':rating.movie,
+                        'stars': rating.stars})
         if user.is_active:
             login(request, user)
             return render(request,
-                        'users/profile_detail.html',
+                        'users/userprofile_detail.html',
                         {'rater':user_r,
                         'ratings': ratings})
         else:
@@ -87,6 +85,19 @@ def user_logout(request):
         user = authenticate(username=username, password=password)
         logout(request, user)
     return redirect('database/top_twenty.html')
+
+
+#@login_required
+def view_profile(request, rater_id):
+    rater = Rater.objects.get(pk=rater_id)
+    ratings = []
+    for rating in rater.rating_set.all():
+        ratings.append({'movie':rating.movie,
+                    'stars': rating.stars})
+    return render(request,
+                'users/userprofile_detail.html',
+                {'rater':rater,
+                'ratings': ratings})
 
 
 class UserProfileDetail(DetailView):

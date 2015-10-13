@@ -1,4 +1,4 @@
-<h2> {{ rater.username }}  Profile</h2>
+<h2> {{ rater.username }}'s  profile</h2>
    <form method="post">
        {% csrf_token %}
        <h3> All Rated Movies </h3>
@@ -8,5 +8,5 @@
            {% endfor %}
          </ul>
        {{ form.as_p }}
-       
+
    </form>

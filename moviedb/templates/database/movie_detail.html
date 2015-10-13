@@ -19,11 +19,20 @@
   <br>
   <input type="radio" name="rating" value="5">5 Stars
   <br>
+  Enter an optional short text review (under 140 characters)
+  <br>
+  <input type="text" name="text" style="width: 140;">
+  <br>
   <input type="submit" value="Submit">
 </form>
 <ul>
   {% for rating in movie.rating_set.all %}
-  <li><a href="{% url 'rater_detail' rating.rater.pk %}"> {{rating.rater.user}}</a>: {{rating.stars}}<li>
+  <li><a href="{% url 'rater_detail' rating.rater.pk %}"> {{rating.rater.user}}</a>: {{rating.stars}} at {{rating.timestamp}}
+    <br>
+    {% if rating.text != None %}
+    Notes: {{rating.text}}
+    {% endif %}
+    <li>
     {% endfor %}
   </ul>
 {% endblock %}

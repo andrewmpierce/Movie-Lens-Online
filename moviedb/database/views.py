@@ -3,6 +3,7 @@ from django.db.models import Avg, Count
 from .models import Movie, Rater, Rating
 from users.forms import RatingForm
 from django import forms
+from datetime import datetime
 # Create your views here.
 
 
@@ -13,7 +14,14 @@ def movie_detail(request, movie_id):
         if request.user.is_authenticated():
                 form = RatingForm(request.POST)
                 if form.is_valid():
-                         Rating.create_rating(movie=movie, rater=request.user.rater, stars=request.POST['rating'])
+                        try:
+                            rating = Rating.objects.get(rater=request.user.rater, movie=movie)
+                            rating.stars=request.POST['rating']
+                            rating.text=request.POST['text']
+                            rating.timestamp=datetime.now()
+                            rating.save()
+                        except:
+                             Rating.create_rating(movie=movie, rater=request.user.rater, stars=request.POST['rating'], text=request.POST['text'], timestamp=datetime.now().strftime('%Y-%m-%d %H:%M'))
         else:
             return redirect("http://127.0.0.1:8000/users/login")
     return render(request,
@@ -34,7 +42,7 @@ def rater_detail(request, rater_id):
 
 
 def top_movies(request):
-    popular_movies = Movie.objects.annotate(num_ratings=Count('rating')) \
+    popular_movies = Movie.objects.all().annotate(num_ratings=Count('rating')) \
                                   .filter(num_ratings__gte=50)
 
     movies = popular_movies.annotate(Avg('rating__stars')) \
@@ -43,3 +51,11 @@ def top_movies(request):
     return render(request,
                   'database/top_twenty.html',
                   {'movies': movies})
+
+def most_viewed(request):
+    popular_movies = Movie.objects.all().annotate(num_ratings=Count('rating')) \
+                                      .order_by('-num_ratings')[:20]
+    return render(request,
+                  'database/most_pop.html',
+                  {'popular_movies': popular_movies,
+                  })

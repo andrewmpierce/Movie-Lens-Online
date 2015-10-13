@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 class Rater(models.Model):
     MALE = 'M'
@@ -36,9 +37,11 @@ class Rating(models.Model):
     rater = models.ForeignKey(Rater)
     movie = models.ForeignKey(Movie)
     stars = models.PositiveSmallIntegerField()
+    text = models.CharField(max_length=140, null = True)
+    timestamp = models.DateTimeField(null = True)
 
     def __str__(self):
          return '{} {} {}'.format(self.rater, self.movie, self.stars)
 
-    def create_rating(rater, movie, stars):
-        return Rating.objects.create(rater=rater, movie=movie, stars=stars)
+    def create_rating(rater, movie, stars, timestamp, text=None):
+        return Rating.objects.create(rater=rater, movie=movie, stars=stars, text=text, timestamp=timestamp)
